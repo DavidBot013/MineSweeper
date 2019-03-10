@@ -46,7 +46,12 @@ public class Control {
 			}
 		}
 	}
-	
+	/**
+	 * Esta función solo es llamada por setMinas(). Lo que hace es decirle a todas las casillas circundantes
+	 * que están cerca de una mina.
+	 * @param fila
+	 * @param col
+	 */
 	private void aumentarMinas(int fila, int col) {
 		aumentarContadorMinas(fila-1,col);
 		aumentarContadorMinas(fila+1,col);
@@ -58,27 +63,63 @@ public class Control {
 		aumentarContadorMinas(fila+1,col+1);
 	}
 	
+	/**
+	 * Función auxiliar de aumentarMinas()
+	 * @param fila
+	 * @param col
+	 */
 	private void aumentarContadorMinas(int fila, int col) {
 		if(fila>=0 && fila<=BOARD-1 && col>=0 && col<=BOARD-1) {
 			celdas[fila][col].increaseMineCount();
 		}
 	}
-	public void nearMines(int fila, int col) {
+	
+	/**
+	 * Chequea si una celda dada es mina o no.
+	 * Si no es una mina se necesita destaparla y saber si podemos propagarnos y destapar más
+	 * celdas en caso de que hayan 0 minas cercanas.
+	 * @param fila
+	 * @param col
+	 */
+	public void checkCelda(int fila, int col) {
+		if(celdas[fila][col].isMina()) {
+			System.out.println("Mina");
+		}
+		else {
+			continuar(fila, col);
+		}
+	}
+	
+	/**
+	 * Destapa la celda seleccionada y en caso de que hayan cero minas cercanas, se propaga hacia sus vecinos.
+	 * @param fila
+	 * @param col
+	 */
+	private void continuar(int fila, int col) {
 		boolean inBounds = (fila>=0 && fila<=BOARD-1) && (col>=0 && col<=BOARD-1);
 		boolean unknownMine = celdas[fila][col].getEstado()==0 && !celdas[fila][col].isMina();
 		if (inBounds && unknownMine) {
 			celdas[fila][col].revelar();
+			if(celdas[fila][col].getMinasCercanas()==0) {
+				checkVecinos(fila, col);
+			}
 		}
 	}
+	
 	/**
-	 * Chequea si una celda dada es mina o no.
-	 * @param celda
+	 * Cheque los ocho vecinos de la celda seleccionada, apoyandose en la función continuar();
+	 * @param fila
+	 * @param col
 	 */
-	public void checkCelda(Celda celda) {
-		nearMines(celda);
-		if(celda.isMina()) {
-			
-		}
+	private void checkVecinos(int fila, int col) {
+		continuar(fila-1,col);
+		continuar(fila+1,col);
+		continuar(fila,col-1);
+		continuar(fila,col+1);
+		continuar(fila-1,col+1);
+		continuar(fila-1,col-1);
+		continuar(fila+1,col-1);
+		continuar(fila+1,col+1);
 	}
 	
 	public Celda[][] getCeldas() {
