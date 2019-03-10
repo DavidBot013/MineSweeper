@@ -75,8 +75,8 @@ public class Celda extends JButton{
 	 * "Destapa" la celda seleccionada. En realidad lo que sucede es que se le asigna
 	 * un icono al botón dependiendo del número de minas cercanas.
 	 */
-	public void revelar() {
-		if(estado==0) {
+	public void revelar(boolean opcion) {
+		if(opcion) {
 			if(esMina==false) {
 				this.setIcon(new ImageIcon("src/resources/"+minasCercanas+".png"));
 			}
@@ -85,6 +85,10 @@ public class Celda extends JButton{
 			}
 			estado=1;
 		}
+		else if (!opcion) {
+			this.setIcon(new ImageIcon("src/resources/10.png"));
+		}
+		
 	}
 	
 	/**

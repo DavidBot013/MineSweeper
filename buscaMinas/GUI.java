@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GUI extends JFrame{
@@ -17,7 +18,7 @@ public class GUI extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private Container mainContenedor;
 	private JPanel mainPanel, panelCuadricula, topPanel;
-	private JLabel etiquetaTitulo, flagLabel;
+	private JLabel flagLabel;
 	private JButton resetButton;
 	private EscuchaMouse escuchaM = new EscuchaMouse();
 	private Control control;
@@ -117,18 +118,44 @@ public class GUI extends JFrame{
 			Celda celdaSeleccionada = (Celda)e.getSource();
 			control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
 			if(control.isGameOver()) {
-				gameEnded();
+				revelarMinas();
+				endMessage(fuente);
 			}
 		}
 	}
 	
-	private void gameEnded() {
+	private void revelarMinas() {
 		for(int fila=0; fila < Control.getBoard(); fila++) {
 			for(int col=0; col < Control.getBoard(); col++) {
 				if(control.getCeldas()[fila][col].isMina()) {
-					control.getCeldas()[fila][col].revelar();
+					control.getCeldas()[fila][col].revelar(true);
 				}
 			}
 		}
 	}
+	
+	private void endMessage(String s) {
+		int option = JOptionPane.showConfirmDialog(mainContenedor, 
+				"Has perdido. ¿Deseas jugar otra vez?", s, JOptionPane.YES_NO_OPTION);
+	
+		
+		System.out.println(option);
+		if(option==0) {
+			
+			restart();
+			control.reset();
+		}
+		else {
+			System.exit(0);
+		}
+	}
+	
+	private void restart() {
+		for(int fila=0; fila < Control.getBoard(); fila++) {
+			for(int col=0; col < Control.getBoard(); col++) {
+					control.getCeldas()[fila][col].revelar(false);
+			}
+		}
+	}
 }
+
