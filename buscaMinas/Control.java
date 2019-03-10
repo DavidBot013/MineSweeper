@@ -41,12 +41,45 @@ public class Control {
 			
 			if(celdas[randomRow][randomCol].isMina()==false) {
 				celdas[randomRow][randomCol].beMine();
+				aumentarMinas(randomRow, randomCol);
 				contador++;
 			}
 		}
 	}
 	
+	private void aumentarMinas(int fila, int col) {
+		aumentarContadorMinas(fila-1,col);
+		aumentarContadorMinas(fila+1,col);
+		aumentarContadorMinas(fila,col-1);
+		aumentarContadorMinas(fila,col+1);
+		aumentarContadorMinas(fila-1,col+1);
+		aumentarContadorMinas(fila-1,col-1);
+		aumentarContadorMinas(fila+1,col-1);
+		aumentarContadorMinas(fila+1,col+1);
+	}
 	
+	private void aumentarContadorMinas(int fila, int col) {
+		if(fila>=0 && fila<=BOARD-1 && col>=0 && col<=BOARD-1) {
+			celdas[fila][col].increaseMineCount();
+		}
+	}
+	public void nearMines(int fila, int col) {
+		boolean inBounds = (fila>=0 && fila<=BOARD-1) && (col>=0 && col<=BOARD-1);
+		boolean unknownMine = celdas[fila][col].getEstado()==0 && !celdas[fila][col].isMina();
+		if (inBounds && unknownMine) {
+			celdas[fila][col].revelar();
+		}
+	}
+	/**
+	 * Chequea si una celda dada es mina o no.
+	 * @param celda
+	 */
+	public void checkCelda(Celda celda) {
+		nearMines(celda);
+		if(celda.isMina()) {
+			
+		}
+	}
 	
 	public Celda[][] getCeldas() {
 		return celdas;

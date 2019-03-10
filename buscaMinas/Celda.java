@@ -1,6 +1,5 @@
 package buscaMinas;
 
-import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
@@ -38,9 +37,11 @@ public class Celda extends JButton{
 		this.fila=fila;
 		this.col=col;
 		estado=0;
+		minasCercanas=0;
 		this.setPreferredSize(new Dimension(SIZE, SIZE));
 		this.setOpaque(true);
-		this.setBackground(Color.DARK_GRAY);
+		this.setIcon(new ImageIcon("src/resources/10.png"));
+		//this.setBackground(Color.DARK_GRAY);
 	}
 	
 	/**
@@ -59,6 +60,9 @@ public class Celda extends JButton{
 		esMina=true;
 	}
 	
+	public void increaseMineCount() {
+		minasCercanas++;
+	}
 	/**
 	 * "Destapa" la celda seleccionada. En realidad lo que sucede es que se le asigna
 	 * un icono al botón dependiendo del número de minas cercanas.
@@ -66,6 +70,7 @@ public class Celda extends JButton{
 	public void revelar() {
 		if(estado==0) {
 			this.setIcon(new ImageIcon("src/resources/"+minasCercanas+".png"));
+			estado=1;
 		}
 	}
 	
