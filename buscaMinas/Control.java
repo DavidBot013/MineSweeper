@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Control {
 	private Celda[][] celdas;
-	private boolean ganador;
+	private boolean ganador, gameOver;
 	private static final int MINAS = 40;
 	private static final int BOARD = 16;
 	private Random aleatorio;
@@ -12,6 +12,7 @@ public class Control {
 	public Control() {
 		celdas = new Celda[BOARD][BOARD];
 		ganador=false;
+		gameOver=false;
 		aleatorio = new Random();
 		instanciarCeldas();
 	}
@@ -83,7 +84,8 @@ public class Control {
 	 */
 	public void checkCelda(int fila, int col) {
 		if(celdas[fila][col].isMina()) {
-			System.out.println("Mina");
+			celdas[fila][col].revelar();
+			gameOver=true;
 		}
 		else {
 			continuar(fila, col);
@@ -95,16 +97,7 @@ public class Control {
 	 * @param fila
 	 * @param col
 	 */
-	private void continuar(int fila, int col) {
-		//boolean inBounds = (fila>=0 && fila<=BOARD-1) && (col>=0 && col<=BOARD-1);
-		//boolean unknownMine = celdas[fila][col].getEstado()==0 && !celdas[fila][col].isMina();
-//		if (inBounds && unknownMine && celdas[fila][col].isFlagged()==false) {
-//			celdas[fila][col].revelar();
-//			if(celdas[fila][col].getMinasCercanas()==0) {
-//				checkVecinos(fila, col);
-//			}
-//		}
-		
+	private void continuar(int fila, int col) {		
 		if(fila>=0 && fila<=BOARD-1 && col>=0 && col<=BOARD-1
 				&& !celdas[fila][col].isMina() && celdas[fila][col].getEstado()==0) {
 				celdas[fila][col].revelar();
@@ -168,5 +161,9 @@ public class Control {
 
 	public static int getBoard() {
 		return BOARD;
+	}
+	
+	public boolean isGameOver() {
+		return gameOver;
 	}
 }

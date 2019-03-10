@@ -64,15 +64,6 @@ public class GUI extends JFrame{
 		}
 	}
 	
-	private void manejaEvento(MouseEvent e) {
-		String fuente = e.getSource().getClass().getName();
-		
-		if(fuente.equals("buscaMinas.Celda")) {
-			Celda celdaSeleccionada = (Celda)e.getSource();
-			System.out.println(celdaSeleccionada.getFila()+", "+celdaSeleccionada.getCol());
-			control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
-		}
-	}
 	private void topMenu() {
 		topPanel = new JPanel();
 		
@@ -117,5 +108,27 @@ public class GUI extends JFrame{
 			
 		}
 		
+	}
+	
+	private void manejaEvento(MouseEvent e) {
+		String fuente = e.getSource().getClass().getName();
+		
+		if(fuente.equals("buscaMinas.Celda")) {
+			Celda celdaSeleccionada = (Celda)e.getSource();
+			control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
+			if(control.isGameOver()) {
+				gameEnded();
+			}
+		}
+	}
+	
+	private void gameEnded() {
+		for(int fila=0; fila < Control.getBoard(); fila++) {
+			for(int col=0; col < Control.getBoard(); col++) {
+				if(control.getCeldas()[fila][col].isMina()) {
+					control.getCeldas()[fila][col].revelar();
+				}
+			}
+		}
 	}
 }
