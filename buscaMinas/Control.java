@@ -98,7 +98,7 @@ public class Control {
 	private void continuar(int fila, int col) {
 		boolean inBounds = (fila>=0 && fila<=BOARD-1) && (col>=0 && col<=BOARD-1);
 		boolean unknownMine = celdas[fila][col].getEstado()==0 && !celdas[fila][col].isMina();
-		if (inBounds && unknownMine && !celdas[fila][col].isFlagged()) {
+		if (inBounds && unknownMine && celdas[fila][col].isFlagged()==false) {
 			celdas[fila][col].revelar();
 			if(celdas[fila][col].getMinasCercanas()==0) {
 				checkVecinos(fila, col);

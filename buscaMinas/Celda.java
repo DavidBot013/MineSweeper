@@ -77,7 +77,12 @@ public class Celda extends JButton{
 	 */
 	public void revelar() {
 		if(estado==0) {
-			this.setIcon(new ImageIcon("src/resources/"+minasCercanas+".png"));
+			if(esMina==false) {
+				this.setIcon(new ImageIcon("src/resources/"+minasCercanas+".png"));
+			}
+			else {
+				this.setIcon(new ImageIcon("src/resources/9.png"));
+			}
 			estado=1;
 		}
 	}

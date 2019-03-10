@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,7 +17,7 @@ public class GUI extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private Container mainContenedor;
 	private JPanel mainPanel, panelCuadricula, topPanel;
-	private JLabel etiquetaTitulo;
+	private JLabel etiquetaTitulo, flagLabel;
 	private JButton resetButton;
 	private EscuchaMouse escuchaM = new EscuchaMouse();
 	private Control control;
@@ -36,9 +37,9 @@ public class GUI extends JFrame{
 		mainPanel.setLayout(new BorderLayout());
 		
 		crearCuadricula();
+		topMenu();
 		
-		
-		
+		mainPanel.add(topPanel, BorderLayout.NORTH);
 		mainPanel.add(panelCuadricula, BorderLayout.CENTER);
 		mainContenedor.add(mainPanel);
 		this.pack();
@@ -63,12 +64,33 @@ public class GUI extends JFrame{
 		}
 	}
 	
+	private void manejaEvento(MouseEvent e) {
+		String fuente = e.getSource().getClass().getName();
+		
+		if(fuente.equals("buscaMinas.Celda")) {
+			Celda celdaSeleccionada = (Celda)e.getSource();
+			System.out.println(celdaSeleccionada.getFila()+", "+celdaSeleccionada.getCol());
+			control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
+		}
+	}
+	private void topMenu() {
+		topPanel = new JPanel();
+		
+		resetButton = new JButton();
+		resetButton.setIcon(new ImageIcon("src/resources/reset.png"));
+		
+		flagLabel = new JLabel();
+		flagLabel.setIcon(new ImageIcon("src/resources/flag.png"));
+		
+		topPanel.add(resetButton);
+		topPanel.add(flagLabel);
+	}
 	private class EscuchaMouse implements MouseListener {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+			manejaEvento(e);
 		}
 
 		@Override
