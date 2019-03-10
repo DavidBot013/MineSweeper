@@ -10,6 +10,7 @@ public class Control {
 		celdas = new Celda[BOARD][BOARD];
 		ganador=false;
 		instanciarCeldas();
+		setMinas();
 	}
 	
 	private void instanciarCeldas() {
@@ -18,5 +19,27 @@ public class Control {
 				celdas[fila][col] = new Celda(fila, col);
 			}
 		}
+	}
+	
+	private void setMinas() {
+		
+	}
+	
+	
+	
+	public Celda[][] getCeldas() {
+		return celdas;
+	}
+
+	public boolean isGanador() {
+		return ganador;
+	}
+
+	public static int getMinas() {
+		return MINAS;
+	}
+
+	public static int getBoard() {
+		return BOARD;
 	}
 }
