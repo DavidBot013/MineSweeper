@@ -21,7 +21,7 @@ public class Celda extends JButton{
 	private int minasCercanas, fila, col, estado;
 	
 	/** The es mina. */
-	private boolean esMina;
+	private boolean esMina, flagged;
 	
 	/** The color. */
 	private String color;
@@ -38,6 +38,7 @@ public class Celda extends JButton{
 		this.col=col;
 		estado=0;
 		minasCercanas=0;
+		flagged=false;
 		this.setPreferredSize(new Dimension(SIZE, SIZE));
 		this.setOpaque(true);
 		this.setIcon(new ImageIcon("src/resources/10.png"));
@@ -46,9 +47,8 @@ public class Celda extends JButton{
 	
 	/**
 	 * Cambia el estado de la celda. Los estados son:
-	 * 0 -> Estado inicial (tapada);
-	 * 1 -> Destapada
-	 * 2 -> Marcada
+	 * 0 -> Estado inicial (tapada).
+	 * 1 -> Destapada.
 	 *
 	 * @param estado the new state
 	 */
@@ -60,6 +60,14 @@ public class Celda extends JButton{
 		esMina=true;
 	}
 	
+	public void flagCell(boolean option) {
+		if(option=true) {
+			flagged=true;
+		}
+		else {
+			flagged=false;
+		}
+	}
 	public void increaseMineCount() {
 		minasCercanas++;
 	}
@@ -126,5 +134,9 @@ public class Celda extends JButton{
 	 */
 	public String getColor() {
 		return color;
-	}	
+	}
+	
+	public boolean isFlagged() {
+		return flagged;
+	}
 }

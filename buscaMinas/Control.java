@@ -14,7 +14,6 @@ public class Control {
 		ganador=false;
 		aleatorio = new Random();
 		instanciarCeldas();
-		setMinas();
 	}
 	/**
 	 * Crea cada celda dentro del arreglo celdas[][] y los inicializa con unas
@@ -26,6 +25,7 @@ public class Control {
 				celdas[fila][col] = new Celda(fila, col);
 			}
 		}
+		setMinas();
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public class Control {
 	private void continuar(int fila, int col) {
 		boolean inBounds = (fila>=0 && fila<=BOARD-1) && (col>=0 && col<=BOARD-1);
 		boolean unknownMine = celdas[fila][col].getEstado()==0 && !celdas[fila][col].isMina();
-		if (inBounds && unknownMine) {
+		if (inBounds && unknownMine && !celdas[fila][col].isFlagged()) {
 			celdas[fila][col].revelar();
 			if(celdas[fila][col].getMinasCercanas()==0) {
 				checkVecinos(fila, col);
@@ -120,6 +120,30 @@ public class Control {
 		continuar(fila-1,col-1);
 		continuar(fila+1,col-1);
 		continuar(fila+1,col+1);
+	}
+	/**
+	 * Lo que sucede a nivel lógico cuando el jugador ponga una banderita sobre la celda.
+	 * Dicha celda queda en un estado bloqueado o 'flagged'
+	 * @param fila
+	 * @param col
+	 */
+	public void lockCell(int fila, int col) {
+		celdas[fila][col].flagCell(true);
+	}
+	/**
+	 * Cuando el jugador quiera quitarle la bandera, Control le dice a la celda que cambie su estado
+	 * flagged a false.
+	 * @param fila
+	 * @param col
+	 */
+	public void unlockCell(int fila, int col) {
+		celdas[fila][col].flagCell(false);
+	}
+	/**
+	 * Reinicia la partida.
+	 */
+	public void reset() {
+		instanciarCeldas();
 	}
 	
 	public Celda[][] getCeldas() {
