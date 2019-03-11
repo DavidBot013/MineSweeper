@@ -155,6 +155,7 @@ public class GUI extends JFrame{
 		if(option==0) {
 			taparCeldas();
 			control.reset();
+			timer.setTime(0);
 			timer.start();
 		}
 		else {
