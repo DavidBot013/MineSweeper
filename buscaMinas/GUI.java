@@ -178,18 +178,17 @@ public class GUI extends JFrame{
 		 * Este bloque condicional evalua si el tiempo fue bueno.
 		 * La función de Control compararTiempos, devuelve -1 si NO fue bueno.
 		 * Si en cambio, el tiempo logrado merece estar dentro del top 5, devuelve
-		 * la posición (lo que se entienede como la linea donde debe ir.)
+		 * la posición (lo que se entiende como la linea donde debe ir.)
 		 */
 		if(posicion!=-1) {
 			String name = JOptionPane.showInputDialog(mainContenedor, "¡Has Ganado!, por favor ingresa tu nombre");
 			String time = timer.timeFormat(timer.getTime());
 			String date = timer.getDate();
 			
-			
-			files.onlyTime(Long.toString(timer.getTime()));
-			files.gestionarTextFile(name+" "+time+" "+date);
-			
-			control.compararTiempos(timer.getTime(), files.getTiempos());
+			/** Le paso a FileManager el nuevo tiempo (sin formato). **/
+			files.modTiempos(posicion, timer.getTime());
+			/** Ahora si le paso a FileManager el nombre, tiempo logrado (hh:mm:ss) y fecha. **/
+			files.gestionarTextFile(posicion, name+" "+time+" "+date);
 		}
 		else {
 			//No hizo un tiempo lo suficientemente bueno, debe preguntarsele 
