@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,12 +83,20 @@ public class FileManager {
 	 */
 	public void gestionarTextFile(int posicion, String s) {		
 		try {
-			listaJugadores = Files.readAllLines((Path) input);
+			Path path = Paths.get("src/resources/top5.txt");
+			listaJugadores = Files.readAllLines(path);
+			
+			if(listaJugadores.isEmpty() || listaJugadores.size()<5) {
+				listaJugadores.add(s);
+			}
+			else {
+				listaJugadores.set(posicion, s);
+				Files.write(path, listaJugadores);
+			}
 			//String texto = s;
 			//String linea = input.readLine();
 			
-			listaJugadores.set(posicion, s);
-			Files.write((Path) input, listaTiempos);
+			
 			
 //			while(linea!=null){
 //			     output.write(texto);
@@ -116,22 +126,31 @@ public class FileManager {
 	private void setTiempos() {
 		
 		try {
-			listaTiempos = Files.readAllLines((Path) inputTiempos);
+			Path path = Paths.get("src/resources/tiempos.txt");
+			listaTiempos = Files.readAllLines(path);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	/**
-	 * Reescribe el archivo tiempos.txt, conel cambio en la linea especificada
+	 * Reescribe el archivo tiempos.txt, convel cambio en la linea especificada
 	 * Esta función se llama cada que haya un tiempo merecedor de estar en el top 5.
 	 * @param linea
 	 * @param newTime
 	 */
 	public void modTiempos(int linea, long newTime) {
-		listaTiempos.set(linea, String.valueOf(newTime));
+		Path path = Paths.get("src/resources/tiempos.txt");
+		
+		if(listaTiempos.isEmpty() || listaTiempos.size()<5) {
+			listaTiempos.add(String.valueOf(newTime));
+		}
+		else {
+			listaTiempos.set(linea, String.valueOf(newTime));
+		}
+		
 		try {
-			Files.write((Path) inputTiempos, listaTiempos);
+			Files.write(path, listaTiempos);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

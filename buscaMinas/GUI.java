@@ -141,7 +141,7 @@ public class GUI extends JFrame{
 					control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
 					if(control.isGameOver()) {
 						timer.stop();
-						//guardarPuntaje();
+						guardarPuntaje();
 						revelarMinas();
 						endMessage();
 					}
@@ -187,6 +187,7 @@ public class GUI extends JFrame{
 			
 			/** Le paso a FileManager el nuevo tiempo (sin formato). **/
 			files.modTiempos(posicion, timer.getTime());
+			System.out.println("has hecho: "+timer.getTime());
 			/** Ahora si le paso a FileManager el nombre, tiempo logrado (hh:mm:ss) y fecha. **/
 			files.gestionarTextFile(posicion, name+" "+time+" "+date);
 		}

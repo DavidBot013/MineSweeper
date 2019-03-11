@@ -182,16 +182,33 @@ public class Control {
 		int contador=0;
 		Iterator<String> it = tiempos.iterator();
 		
-		do {
+		while(it.hasNext()) {
 			long oldTime = Long.parseLong(it.next());
-			if(newTime<oldTime || tiempos.isEmpty()) {
-				return contador;
-				//files.modTiempos(contador, newTime);
-				
+			if(tiempos.size()<5) {
+				if(newTime<oldTime) {
+					return contador;
+					//files.modTiempos(contador, newTime);
+				}
+				else {
+					System.out.print("too small, sending " + (tiempos.size()));
+					return tiempos.size();
+				}
+			}
+			else {
+				if(newTime<oldTime) {
+					return contador;
+					//files.modTiempos(contador, newTime);
+				}
 			}
 			contador++;
-		} while(it.hasNext());
-		return -1;
+		}
+		
+		if(tiempos.isEmpty()) {
+			return 0;
+		}
+		else {
+			return -1;
+		}
 	}
 		
 	public Celda[][] getCeldas() {
