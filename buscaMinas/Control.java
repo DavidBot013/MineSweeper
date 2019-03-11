@@ -182,7 +182,7 @@ public class Control {
 		
 		do {
 			long oldTime = Long.parseLong(it.next());
-			if(newTime<oldTime) {
+			if(newTime<oldTime || tiempos.isEmpty()) {
 				return contador;
 				//files.modTiempos(contador, newTime);
 				

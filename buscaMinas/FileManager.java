@@ -82,8 +82,8 @@ public class FileManager {
 	public void gestionarTextFile(int posicion, String s) {		
 		try {
 			listaJugadores = Files.readAllLines((Path) input);
-			String texto = s;
-			String linea = input.readLine();
+			//String texto = s;
+			//String linea = input.readLine();
 			
 			listaJugadores.set(posicion, s);
 			Files.write((Path) input, listaTiempos);
