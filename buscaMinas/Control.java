@@ -184,31 +184,18 @@ public class Control {
 		
 		while(it.hasNext()) {
 			long oldTime = Long.parseLong(it.next());
-			if(tiempos.size()<5) {
-				if(newTime<oldTime) {
-					return contador;
-					//files.modTiempos(contador, newTime);
-				}
-				else {
-					System.out.print("too small, sending " + (tiempos.size()));
-					return tiempos.size();
-				}
+			System.out.println("old "+oldTime);
+			if(tiempos.isEmpty()) {
+				return 0;
 			}
 			else {
 				if(newTime<oldTime) {
 					return contador;
-					//files.modTiempos(contador, newTime);
 				}
 			}
 			contador++;
 		}
-		
-		if(tiempos.isEmpty()) {
-			return 0;
-		}
-		else {
-			return -1;
-		}
+		return -1;
 	}
 		
 	public Celda[][] getCeldas() {

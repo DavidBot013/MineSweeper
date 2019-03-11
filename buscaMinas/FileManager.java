@@ -86,13 +86,17 @@ public class FileManager {
 			Path path = Paths.get("src/resources/top5.txt");
 			listaJugadores = Files.readAllLines(path);
 			
-			if(listaJugadores.isEmpty() || listaJugadores.size()<5) {
+			if(listaJugadores.isEmpty()) {
 				listaJugadores.add(s);
+			}
+			else if(listaJugadores.size()<5) {
+				listaJugadores.add(posicion, s);
 			}
 			else {
 				listaJugadores.set(posicion, s);
-				Files.write(path, listaJugadores);
 			}
+			
+			Files.write(path, listaJugadores);
 			//String texto = s;
 			//String linea = input.readLine();
 			
@@ -142,8 +146,11 @@ public class FileManager {
 	public void modTiempos(int linea, long newTime) {
 		Path path = Paths.get("src/resources/tiempos.txt");
 		
-		if(listaTiempos.isEmpty() || listaTiempos.size()<5) {
+		if(listaTiempos.isEmpty()) {
 			listaTiempos.add(String.valueOf(newTime));
+		}
+		else if (listaTiempos.size()<5) {
+			listaTiempos.add(linea, String.valueOf(newTime));
 		}
 		else {
 			listaTiempos.set(linea, String.valueOf(newTime));
