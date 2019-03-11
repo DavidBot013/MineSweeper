@@ -1,6 +1,7 @@
 package buscaMinas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
@@ -42,9 +43,9 @@ public class GUI extends JFrame{
 		crearCuadricula();
 		topMenu();
 		
-		mainPanel.add(topPanel, BorderLayout.NORTH);
+		mainPanel.add(topPanel, BorderLayout.SOUTH);
 		mainPanel.add(panelCuadricula, BorderLayout.CENTER);
-		mainPanel.add(timer, BorderLayout.SOUTH);
+		mainPanel.add(timer, BorderLayout.NORTH);
 		mainContenedor.add(mainPanel);
 		this.pack();
 		this.setLocationRelativeTo(null);
@@ -74,7 +75,8 @@ public class GUI extends JFrame{
 		
 		resetButton = new JButton();
 		resetButton.setIcon(new ImageIcon("src/resources/reset.png"));
-		
+		resetButton.setBackground(Color.GRAY);
+		resetButton.addMouseListener(escuchaM);
 		flagLabel = new JLabel();
 		flagLabel.setIcon(new ImageIcon("src/resources/flag.png"));
 		
@@ -122,9 +124,15 @@ public class GUI extends JFrame{
 			Celda celdaSeleccionada = (Celda)e.getSource();
 			control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
 			if(control.isGameOver()) {
+				timer.stop();
 				revelarMinas();
 				endMessage(fuente);
 			}
+		}
+		else if(e.getSource()==resetButton){
+			timer.setTime(0);
+			taparCeldas();
+			control.reset();
 		}
 	}
 	
@@ -147,6 +155,7 @@ public class GUI extends JFrame{
 		if(option==0) {
 			taparCeldas();
 			control.reset();
+			timer.start();
 		}
 		else {
 			System.exit(0);
