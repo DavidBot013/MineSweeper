@@ -11,9 +11,11 @@ public class Control {
 	private int banderas, celdasTapadas;
 	private static final int BOARD = 16;
 	private Random aleatorio;
+	private FileManager files;
 	
 	public Control() {
 		celdas = new Celda[BOARD][BOARD];
+		files = new FileManager();
 		ganador=false;
 		gameOver=false;
 		celdasTapadas=BOARD*BOARD;
@@ -178,13 +180,15 @@ public class Control {
 		int contador=0;
 		Iterator<String> it = tiempos.iterator();
 		
-		while(it.hasNext()) {
+		do {
 			long oldTime = Long.parseLong(it.next());
-			if(newTime>oldTime) {
+			if(newTime<oldTime) {
+				files.modTiempos(contador, newTime);
 				break;
 			}
 			contador++;
-		}
+		} while(it.hasNext());
+		
 	}
 		
 	public Celda[][] getCeldas() {

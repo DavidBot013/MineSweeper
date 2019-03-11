@@ -173,12 +173,15 @@ public class GUI extends JFrame{
 		}
 	}
 	private void guardarPuntaje() {
+		
 		String name = JOptionPane.showInputDialog(mainContenedor, "¡Has Ganado!, por favor ingresa tu nombre");
 		String time = timer.timeFormat(timer.getTime());
 		String date = timer.getDate();
 		System.out.println(name+"\t"+time);
 		files.onlyTime(Long.toString(timer.getTime()));
 		files.gestionarTextFile(name+" "+time+" "+date);
+		
+		control.compararTiempos(timer.getTime(), files.getTiempos());
 	}
 	
 	private void endMessage() {

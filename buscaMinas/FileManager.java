@@ -16,7 +16,8 @@ public class FileManager {
 	private BufferedReader input, inputT;
 	private FileWriter fileWrite, fileWT;
 	private BufferedWriter output, outputT;
-	private List<String> listaTiempos;
+	private List<String> listaTiempos, listaJugadores;
+	
 	
 	public FileManager() {
 		try {
@@ -31,6 +32,7 @@ public class FileManager {
 			outputT = new BufferedWriter(fileWT);
 			
 			listaTiempos = new ArrayList<String>();
+			listaJugadores = new ArrayList<String>();
 		}catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}catch (IOException e) {
@@ -79,6 +81,7 @@ public class FileManager {
 	 */
 	public void gestionarTextFile(String s) {		
 		try {
+			listaJugadores = Files.readAllLines((Path) input);
 			String texto = s;
 			String linea = input.readLine();
 			
@@ -108,7 +111,7 @@ public class FileManager {
 	   }
 	}
 
-	public void setTiempos() {
+	private void setTiempos() {
 		
 		try {
 			listaTiempos = Files.readAllLines((Path) inputT);
@@ -118,7 +121,18 @@ public class FileManager {
 		}
 	}
 	
+	public void modTiempos(int linea, long newTime) {
+		listaTiempos.set(linea, String.valueOf(newTime));
+		try {
+			Files.write((Path) inputT, listaTiempos);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public List<String> getTiempos() {
+		setTiempos();
 		return listaTiempos;
 	}
 }
