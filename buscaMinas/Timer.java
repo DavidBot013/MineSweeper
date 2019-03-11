@@ -63,6 +63,14 @@ public class Timer extends JPanel implements Runnable {
 		repaint();
 	}
 	
+	public String timeFormat(long time) {
+		long h = time/3600;
+		long m = (time-h*3600)/60;
+		long s = time - h*3600 - m*60;
+		
+		timeString = String.format("%02d:%02d:%02d", h, m, s);
+		return timeString;
+	}
 	public void start() {
 		stop();
 		hilo1 = new Thread(this);

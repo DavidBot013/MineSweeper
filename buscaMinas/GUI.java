@@ -24,10 +24,12 @@ public class GUI extends JFrame{
 	private EscuchaMouse escuchaM = new EscuchaMouse();
 	private Control control;
 	private Timer timer;
+	private FileManager files;
 	
 	public GUI() {
 		control = new Control();
 		timer = new Timer();
+		files = new FileManager();
 		this.setTitle("MineSweeper");
 		this.setResizable(false);
 		initGUI();
@@ -140,12 +142,13 @@ public class GUI extends JFrame{
 					if(control.isGameOver()) {
 						timer.stop();
 						revelarMinas();
-						endMessage(fuente);
+						endMessage();
 					}
 					else {
 						if(control.isGanador()) {
 							timer.stop();
-							JOptionPane.showMessageDialog(mainContenedor, "¡Felicidades, has ganado!");
+							guardarPuntaje();
+						
 						}
 					}
 				}
@@ -168,13 +171,17 @@ public class GUI extends JFrame{
 			}
 		}
 	}
+	private void guardarPuntaje() {
+		String name = JOptionPane.showInputDialog(mainContenedor, "¡Has Ganado!, por favor ingresa tu nombre");
 	
-	private void endMessage(String s) {
+		String time = timer.timeFormat(timer.getTime());
+	}
+	
+	private void endMessage() {
 		int option = JOptionPane.showConfirmDialog(mainContenedor, 
-				"Has perdido. ¿Deseas jugar otra vez?", s, JOptionPane.YES_NO_OPTION);
+				"Has perdido. ¿Deseas jugar otra vez?", "GameOver", JOptionPane.YES_NO_OPTION);
 	
 		
-		System.out.println(option);
 		if(option==0) {
 			taparCeldas();
 			control.reset();

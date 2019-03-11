@@ -147,6 +147,16 @@ public class Control {
 		celdas[fila][col].flagCell(false);
 		banderas++;
 	}
+	
+	public boolean goodEnough(long newTime) {
+		//long oldTime = 
+//		if(newTime>oldTime) {
+//			return true;
+//		}
+//		else {
+//			return false;
+//		}
+	}
 	/**
 	 * Reinicia la partida.
 	 */
