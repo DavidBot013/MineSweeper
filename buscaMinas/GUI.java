@@ -128,7 +128,7 @@ public class GUI extends JFrame{
 		for(int fila=0; fila < Control.getBoard(); fila++) {
 			for(int col=0; col < Control.getBoard(); col++) {
 				if(control.getCeldas()[fila][col].isMina()) {
-					control.getCeldas()[fila][col].revelar(true);
+					control.getCeldas()[fila][col].revelar();
 				}
 			}
 		}
@@ -141,8 +141,7 @@ public class GUI extends JFrame{
 		
 		System.out.println(option);
 		if(option==0) {
-			
-			restart();
+			taparCeldas();
 			control.reset();
 		}
 		else {
@@ -150,10 +149,10 @@ public class GUI extends JFrame{
 		}
 	}
 	
-	private void restart() {
+	private void taparCeldas() {
 		for(int fila=0; fila < Control.getBoard(); fila++) {
 			for(int col=0; col < Control.getBoard(); col++) {
-					control.getCeldas()[fila][col].revelar(false);
+				control.getCeldas()[fila][col].setIcon(new ImageIcon("/resources/10.png"));
 			}
 		}
 	}

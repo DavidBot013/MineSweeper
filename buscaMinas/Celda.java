@@ -68,6 +68,17 @@ public class Celda extends JButton{
 			flagged=false;
 		}
 	}
+	/**
+	 * Reestablece los atributos de la Celda, para poder volver a jugar.
+	 */
+	public void reset() {
+		esMina=false;
+		flagged=false;
+		minasCercanas=0;
+		estado=0;
+		this.setIcon(new ImageIcon("src/resources/10.png"));
+	}
+	
 	public void increaseMineCount() {
 		minasCercanas++;
 	}
@@ -75,8 +86,8 @@ public class Celda extends JButton{
 	 * "Destapa" la celda seleccionada. En realidad lo que sucede es que se le asigna
 	 * un icono al botón dependiendo del número de minas cercanas.
 	 */
-	public void revelar(boolean opcion) {
-		if(opcion) {
+	public void revelar() {
+		if(estado==0) {
 			if(esMina==false) {
 				this.setIcon(new ImageIcon("src/resources/"+minasCercanas+".png"));
 			}
@@ -85,10 +96,6 @@ public class Celda extends JButton{
 			}
 			estado=1;
 		}
-		else if (!opcion) {
-			this.setIcon(new ImageIcon("src/resources/10.png"));
-		}
-		
 	}
 	
 	/**

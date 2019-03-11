@@ -84,7 +84,7 @@ public class Control {
 	 */
 	public void checkCelda(int fila, int col) {
 		if(celdas[fila][col].isMina()) {
-			celdas[fila][col].revelar(true);
+			celdas[fila][col].revelar();
 			gameOver=true;
 		}
 		else {
@@ -100,7 +100,7 @@ public class Control {
 	private void continuar(int fila, int col) {		
 		if(fila>=0 && fila<=BOARD-1 && col>=0 && col<=BOARD-1
 				&& !celdas[fila][col].isMina() && celdas[fila][col].getEstado()==0) {
-				celdas[fila][col].revelar(true);
+				celdas[fila][col].revelar();
 				if(celdas[fila][col].getMinasCercanas()==0) {
 					checkVecinos(fila,col);
 				}
@@ -144,8 +144,13 @@ public class Control {
 	 * Reinicia la partida.
 	 */
 	public void reset() {
-		instanciarCeldas();
 		gameOver=false;
+		for(int fila=0; fila<BOARD; fila++) {
+			for(int col=0; col<BOARD; col++) {
+				celdas[fila][col].reset();
+			}
+		}
+		setMinas();
 	}
 	
 	public Celda[][] getCeldas() {
