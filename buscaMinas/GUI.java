@@ -174,11 +174,18 @@ public class GUI extends JFrame{
 	}
 	private void guardarPuntaje() {
 		int posicion = control.compararTiempos(timer.getTime(), files.getTiempos());
+		/**
+		 * Este bloque condicional evalua si el tiempo fue bueno.
+		 * La función de Control compararTiempos, devuelve -1 si NO fue bueno.
+		 * Si en cambio, el tiempo logrado merece estar dentro del top 5, devuelve
+		 * la posición (lo que se entienede como la linea donde debe ir.)
+		 */
 		if(posicion!=-1) {
 			String name = JOptionPane.showInputDialog(mainContenedor, "¡Has Ganado!, por favor ingresa tu nombre");
 			String time = timer.timeFormat(timer.getTime());
 			String date = timer.getDate();
-			//System.out.println(name+"\t"+time);
+			
+			
 			files.onlyTime(Long.toString(timer.getTime()));
 			files.gestionarTextFile(name+" "+time+" "+date);
 			
