@@ -18,7 +18,7 @@ public class GUI extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	private Container mainContenedor;
-	private JPanel mainPanel, panelCuadricula, topPanel;
+	private JPanel mainPanel, panelCuadricula, bottomPanel;
 	private JLabel flagLabel, numFlags;
 	private JButton resetButton;
 	private EscuchaMouse escuchaM = new EscuchaMouse();
@@ -41,9 +41,9 @@ public class GUI extends JFrame{
 		mainPanel.setLayout(new BorderLayout());
 		
 		crearCuadricula();
-		topMenu();
+		bottomMenu();
 		
-		mainPanel.add(topPanel, BorderLayout.SOUTH);
+		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 		mainPanel.add(panelCuadricula, BorderLayout.CENTER);
 		mainPanel.add(timer, BorderLayout.NORTH);
 		mainContenedor.add(mainPanel);
@@ -70,8 +70,8 @@ public class GUI extends JFrame{
 		}
 	}
 	
-	private void topMenu() {
-		topPanel = new JPanel();
+	private void bottomMenu() {
+		bottomPanel = new JPanel();
 		
 		resetButton = new JButton();
 		resetButton.setIcon(new ImageIcon("src/resources/reset.png"));
@@ -79,9 +79,11 @@ public class GUI extends JFrame{
 		resetButton.addMouseListener(escuchaM);
 		flagLabel = new JLabel();
 		flagLabel.setIcon(new ImageIcon("src/resources/flag.png"));
+		numFlags=new JLabel(Integer.toString(control.getFlags()));
 		
-		topPanel.add(resetButton);
-		topPanel.add(flagLabel);
+		bottomPanel.add(resetButton);
+		bottomPanel.add(flagLabel);
+		bottomPanel.add(numFlags);
 	}
 	private class EscuchaMouse implements MouseListener {
 
@@ -124,11 +126,13 @@ public class GUI extends JFrame{
 			Celda celdaSeleccionada = (Celda)e.getSource();
 			if(e.getButton()==3) {
 				if(celdaSeleccionada.isFlagged()) {
-					celdaSeleccionada.flagCell(false);
+					control.unlockCell(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
 				}
 				else {
-					celdaSeleccionada.flagCell(true);
+					control.lockCell(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
 				}
+				numFlags.setText(Integer.toString(control.getFlags()));
+				System.out.println(control.getFlags());
 			}
 			else {
 				control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
