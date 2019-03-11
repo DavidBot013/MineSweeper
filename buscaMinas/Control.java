@@ -6,6 +6,7 @@ public class Control {
 	private Celda[][] celdas;
 	private boolean ganador, gameOver;
 	private static final int MINAS = 40;
+	private int banderas;
 	private static final int BOARD = 16;
 	private Random aleatorio;
 	
@@ -13,6 +14,7 @@ public class Control {
 		celdas = new Celda[BOARD][BOARD];
 		ganador=false;
 		gameOver=false;
+		banderas=MINAS;
 		aleatorio = new Random();
 		instanciarCeldas();
 	}
@@ -130,6 +132,7 @@ public class Control {
 	 */
 	public void lockCell(int fila, int col) {
 		celdas[fila][col].flagCell(true);
+		banderas--;
 	}
 	/**
 	 * Cuando el jugador quiera quitarle la bandera, Control le dice a la celda que cambie su estado
@@ -139,6 +142,7 @@ public class Control {
 	 */
 	public void unlockCell(int fila, int col) {
 		celdas[fila][col].flagCell(false);
+		banderas++;
 	}
 	/**
 	 * Reinicia la partida.
@@ -171,5 +175,9 @@ public class Control {
 	
 	public boolean isGameOver() {
 		return gameOver;
+	}
+	
+	public int getFlags() {
+		return banderas;
 	}
 }

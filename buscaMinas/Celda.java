@@ -61,10 +61,12 @@ public class Celda extends JButton{
 	}
 	
 	public void flagCell(boolean option) {
-		if(option=true) {
+		if(option) {
 			flagged=true;
+			this.setIcon(new ImageIcon("src/resources/11.png"));
 		}
 		else {
+			this.setIcon(new ImageIcon("src/resources/10.png"));
 			flagged=false;
 		}
 	}

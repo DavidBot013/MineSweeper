@@ -19,7 +19,7 @@ public class GUI extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private Container mainContenedor;
 	private JPanel mainPanel, panelCuadricula, topPanel;
-	private JLabel flagLabel;
+	private JLabel flagLabel, numFlags;
 	private JButton resetButton;
 	private EscuchaMouse escuchaM = new EscuchaMouse();
 	private Control control;
@@ -122,11 +122,21 @@ public class GUI extends JFrame{
 		
 		if(fuente.equals("buscaMinas.Celda")) {
 			Celda celdaSeleccionada = (Celda)e.getSource();
-			control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
-			if(control.isGameOver()) {
-				timer.stop();
-				revelarMinas();
-				endMessage(fuente);
+			if(e.getButton()==3) {
+				if(celdaSeleccionada.isFlagged()) {
+					celdaSeleccionada.flagCell(false);
+				}
+				else {
+					celdaSeleccionada.flagCell(true);
+				}
+			}
+			else {
+				control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
+				if(control.isGameOver()) {
+					timer.stop();
+					revelarMinas();
+					endMessage(fuente);
+				}
 			}
 		}
 		else if(e.getSource()==resetButton){
