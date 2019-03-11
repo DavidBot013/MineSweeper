@@ -194,6 +194,7 @@ public class GUI extends JFrame{
 		else {
 			//No hizo un tiempo lo suficientemente bueno, debe preguntarsele 
 			//si quiere volver a jugar.
+			System.out.println("wat");
 		}
 	}
 	
