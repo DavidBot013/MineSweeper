@@ -135,11 +135,13 @@ public class GUI extends JFrame{
 				System.out.println(control.getFlags());
 			}
 			else {
-				control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
-				if(control.isGameOver()) {
-					timer.stop();
-					revelarMinas();
-					endMessage(fuente);
+				if(!celdaSeleccionada.isFlagged()) {
+					control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
+					if(control.isGameOver()) {
+						timer.stop();
+						revelarMinas();
+						endMessage(fuente);
+					}
 				}
 			}
 		}
