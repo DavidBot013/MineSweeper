@@ -173,16 +173,23 @@ public class GUI extends JFrame{
 		}
 	}
 	private void guardarPuntaje() {
-		
-		String name = JOptionPane.showInputDialog(mainContenedor, "¡Has Ganado!, por favor ingresa tu nombre");
-		String time = timer.timeFormat(timer.getTime());
-		String date = timer.getDate();
-		System.out.println(name+"\t"+time);
-		files.onlyTime(Long.toString(timer.getTime()));
-		files.gestionarTextFile(name+" "+time+" "+date);
-		
-		control.compararTiempos(timer.getTime(), files.getTiempos());
+		int posicion = control.compararTiempos(timer.getTime(), files.getTiempos());
+		if(posicion!=-1) {
+			String name = JOptionPane.showInputDialog(mainContenedor, "¡Has Ganado!, por favor ingresa tu nombre");
+			String time = timer.timeFormat(timer.getTime());
+			String date = timer.getDate();
+			//System.out.println(name+"\t"+time);
+			files.onlyTime(Long.toString(timer.getTime()));
+			files.gestionarTextFile(name+" "+time+" "+date);
+			
+			control.compararTiempos(timer.getTime(), files.getTiempos());
+		}
+		else {
+			//No hizo un tiempo lo suficientemente bueno, debe preguntarsele 
+			//si quiere volver a jugar.
+		}
 	}
+	
 	
 	private void endMessage() {
 		int option = JOptionPane.showConfirmDialog(mainContenedor, 

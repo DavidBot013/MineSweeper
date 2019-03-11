@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileManager {
-	private FileReader fileRead, fileT;
-	private BufferedReader input, inputT;
-	private FileWriter fileWrite, fileWT;
-	private BufferedWriter output, outputT;
+	private FileReader fileRead, fileTiempos;
+	private BufferedReader input, inputTiempos;
+	private FileWriter fileWrite, fileWriteTiempos;
+	private BufferedWriter output, outputTiempos;
 	private List<String> listaTiempos, listaJugadores;
 	
 	
@@ -26,10 +26,10 @@ public class FileManager {
 			fileWrite = new FileWriter("src/resources/top5.txt",true);
 			output = new BufferedWriter(fileWrite);
 			
-			fileT = new FileReader("src/resources/tiempos.txt");
-			inputT = new BufferedReader(fileT);
-			fileWT = new FileWriter("src/resources/tiempos.txt",true);
-			outputT = new BufferedWriter(fileWT);
+			fileTiempos = new FileReader("src/resources/tiempos.txt");
+			inputTiempos = new BufferedReader(fileTiempos);
+			fileWriteTiempos = new FileWriter("src/resources/tiempos.txt",true);
+			outputTiempos = new BufferedWriter(fileWriteTiempos);
 			
 			listaTiempos = new ArrayList<String>();
 			listaJugadores = new ArrayList<String>();
@@ -49,12 +49,12 @@ public class FileManager {
 	 */
 	public void onlyTime(String time) {
 		try {			
-			String linea = inputT.readLine();
+			String linea = inputTiempos.readLine();
 			String texto = time;
 			
 			while(linea!=null){
-				outputT.write(texto);
-			    outputT.newLine();
+				outputTiempos.write(texto);
+			    outputTiempos.newLine();
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -66,8 +66,8 @@ public class FileManager {
 		
 		finally{
 			   try {
-				inputT.close();
-				outputT.close();
+				inputTiempos.close();
+				outputTiempos.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -79,19 +79,19 @@ public class FileManager {
 	 * Guarda en el archivo top5.txt el nombre, tiempo logrado y fecha de cada jugador.
 	 * @param s
 	 */
-	public void gestionarTextFile(String s) {		
+	public void gestionarTextFile(int posicion, String s) {		
 		try {
 			listaJugadores = Files.readAllLines((Path) input);
 			String texto = s;
 			String linea = input.readLine();
 			
-			while(linea!=null){
-			     //String nuevoTexto = pasarMayusculas(texto);
-			     output.write(texto);
-			     output.newLine();
-			     //texto = input.readLine();
-			     //System.out.println(input.readLine());
-			}
+			listaJugadores.set(posicion, s);
+			Files.write((Path) input, listaTiempos);
+			
+//			while(linea!=null){
+//			     output.write(texto);
+//			     output.newLine();
+//			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,21 +110,28 @@ public class FileManager {
 		}
 	   }
 	}
-
+	/**
+	 * 
+	 */
 	private void setTiempos() {
 		
 		try {
-			listaTiempos = Files.readAllLines((Path) inputT);
+			listaTiempos = Files.readAllLines((Path) inputTiempos);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Reescribe el archivo tiempos.txt, conel cambio en la linea especificada
+	 * Esta función se llama cada que haya un tiempo merecedor de estar en el top 5.
+	 * @param linea
+	 * @param newTime
+	 */
 	public void modTiempos(int linea, long newTime) {
 		listaTiempos.set(linea, String.valueOf(newTime));
 		try {
-			Files.write((Path) inputT, listaTiempos);
+			Files.write((Path) inputTiempos, listaTiempos);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

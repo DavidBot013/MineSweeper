@@ -176,19 +176,20 @@ public class Control {
 		setMinas();
 	}
 	
-	public void compararTiempos(long newTime, List<String> tiempos) {
+	public int compararTiempos(long newTime, List<String> tiempos) {
 		int contador=0;
 		Iterator<String> it = tiempos.iterator();
 		
 		do {
 			long oldTime = Long.parseLong(it.next());
 			if(newTime<oldTime) {
-				files.modTiempos(contador, newTime);
-				break;
+				return contador;
+				//files.modTiempos(contador, newTime);
+				
 			}
 			contador++;
 		} while(it.hasNext());
-		
+		return -1;
 	}
 		
 	public Celda[][] getCeldas() {
