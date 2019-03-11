@@ -1,5 +1,7 @@
 package buscaMinas;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class Control {
@@ -148,7 +150,7 @@ public class Control {
 		banderas++;
 	}
 	
-	public boolean goodEnough(long newTime) {
+	//public boolean goodEnough(long newTime) {
 		//long oldTime = 
 //		if(newTime>oldTime) {
 //			return true;
@@ -156,7 +158,7 @@ public class Control {
 //		else {
 //			return false;
 //		}
-	}
+//	}
 	/**
 	 * Reinicia la partida.
 	 */
@@ -170,6 +172,19 @@ public class Control {
 			}
 		}
 		setMinas();
+	}
+	
+	public void compararTiempos(long newTime, List<String> tiempos) {
+		int contador=0;
+		Iterator<String> it = tiempos.iterator();
+		
+		while(it.hasNext()) {
+			long oldTime = Long.parseLong(it.next());
+			if(newTime>oldTime) {
+				break;
+			}
+			contador++;
+		}
 	}
 		
 	public Celda[][] getCeldas() {

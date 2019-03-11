@@ -6,35 +6,87 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileManager {
-	private FileReader fileRead;
-	private BufferedReader input;
-	private FileWriter fileWrite;
-	private BufferedWriter output;
+	private FileReader fileRead, fileT;
+	private BufferedReader input, inputT;
+	private FileWriter fileWrite, fileWT;
+	private BufferedWriter output, outputT;
+	private List<String> listaTiempos;
 	
-	/*
-	 * private String pasarMayusculas(String texto){ return texto.toUpperCase();
-	 * 
-	 * }
-	 */
-	
-	public void gestionarTextFile(String s) {
-		
+	public FileManager() {
 		try {
-			//fileRead = new FileReader("src/files/original.txt");
-			//input = new BufferedReader(fileRead);
-			
-			fileWrite = new FileWriter("src/files/top5.txt",true);
+			fileRead = new FileReader("src/resources/top5.txt");
+			input = new BufferedReader(fileRead);
+			fileWrite = new FileWriter("src/resources/top5.txt",true);
 			output = new BufferedWriter(fileWrite);
 			
-			String texto = s;
+			fileT = new FileReader("src/resources/tiempos.txt");
+			inputT = new BufferedReader(fileT);
+			fileWT = new FileWriter("src/resources/tiempos.txt",true);
+			outputT = new BufferedWriter(fileWT);
 			
-			while(texto!=null){
+			listaTiempos = new ArrayList<String>();
+		}catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * Escribe al archivo tiempos.txt el recurso timer.getTime(), sin formato 
+	 * para poder comparar más facilmente en el caso que un jugador haga un tiempo
+	 * que merezca estar en el top 5.
+	 * @param time
+	 */
+	public void onlyTime(String time) {
+		try {			
+			String linea = inputT.readLine();
+			String texto = time;
+			
+			while(linea!=null){
+				outputT.write(texto);
+			    outputT.newLine();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		finally{
+			   try {
+				inputT.close();
+				outputT.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		   }
+	}
+	
+	/**
+	 * Guarda en el archivo top5.txt el nombre, tiempo logrado y fecha de cada jugador.
+	 * @param s
+	 */
+	public void gestionarTextFile(String s) {		
+		try {
+			String texto = s;
+			String linea = input.readLine();
+			
+			while(linea!=null){
 			     //String nuevoTexto = pasarMayusculas(texto);
 			     output.write(texto);
 			     output.newLine();
-			     texto = input.readLine();
+			     //texto = input.readLine();
 			     //System.out.println(input.readLine());
 			}
 		} catch (FileNotFoundException e) {
@@ -55,4 +107,20 @@ public class FileManager {
 		}
 	   }
 	}
+
+	public void setTiempos() {
+		
+		try {
+			listaTiempos = Files.readAllLines((Path) inputT);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public List<String> getTiempos() {
+		return listaTiempos;
+	}
 }
+
+

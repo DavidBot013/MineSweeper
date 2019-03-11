@@ -5,8 +5,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import javax.swing.JPanel;
+import javax.swing.text.DateFormatter;
 
 public class Timer extends JPanel implements Runnable {
 	
@@ -71,6 +76,7 @@ public class Timer extends JPanel implements Runnable {
 		timeString = String.format("%02d:%02d:%02d", h, m, s);
 		return timeString;
 	}
+	
 	public void start() {
 		stop();
 		hilo1 = new Thread(this);
@@ -86,6 +92,14 @@ public class Timer extends JPanel implements Runnable {
 	
 	public long getTime() {
 		return time;
+	}
+	
+	public String getDate() {
+		LocalDateTime ldt = LocalDateTime.now().plusDays(1);
+		DateTimeFormatter formato1 = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+		
+		String fecha = formato1.format(ldt);
+		return fecha;
 	}
 
 }
