@@ -22,9 +22,11 @@ public class GUI extends JFrame{
 	private JButton resetButton;
 	private EscuchaMouse escuchaM = new EscuchaMouse();
 	private Control control;
+	private Timer timer;
 	
 	public GUI() {
 		control = new Control();
+		timer = new Timer();
 		this.setTitle("MineSweeper");
 		this.setResizable(false);
 		initGUI();
@@ -42,10 +44,12 @@ public class GUI extends JFrame{
 		
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 		mainPanel.add(panelCuadricula, BorderLayout.CENTER);
+		mainPanel.add(timer, BorderLayout.SOUTH);
 		mainContenedor.add(mainPanel);
 		this.pack();
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+		timer.start();
 	}
 	
 	private void crearCuadricula() {
