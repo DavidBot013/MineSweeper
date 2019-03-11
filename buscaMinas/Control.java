@@ -138,8 +138,10 @@ public class Control {
 	 * @param col
 	 */
 	public void lockCell(int fila, int col) {
-		celdas[fila][col].flagCell(true);
-		banderas--;
+		if(celdas[fila][col].getEstado()==0) {
+			celdas[fila][col].flagCell(true);
+			banderas--;
+		}
 	}
 	/**
 	 * Cuando el jugador quiera quitarle la bandera, Control le dice a la celda que cambie su estado
