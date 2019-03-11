@@ -141,7 +141,8 @@ public class GUI extends JFrame{
 					control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
 					if(control.isGameOver()) {
 						timer.stop();
-						guardarPuntaje();
+						JOptionPane.showMessageDialog(mainContenedor, "Has perdido.");
+						//guardarPuntaje();
 						revelarMinas();
 						endMessage();
 					}
@@ -194,14 +195,15 @@ public class GUI extends JFrame{
 		else {
 			//No hizo un tiempo lo suficientemente bueno, debe preguntarsele 
 			//si quiere volver a jugar.
-			System.out.println("wat");
+			JOptionPane.showMessageDialog(mainContenedor, "¡Has ganado!. Pero no entras al top 5 :(");
+			endMessage();
 		}
 	}
 	
 	
 	private void endMessage() {
 		int option = JOptionPane.showConfirmDialog(mainContenedor, 
-				"Has perdido. ¿Deseas jugar otra vez?", "GameOver", JOptionPane.YES_NO_OPTION);
+				"¿Deseas jugar otra vez?", "GameOver", JOptionPane.YES_NO_OPTION);
 	
 		
 		if(option==0) {

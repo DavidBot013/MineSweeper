@@ -11,11 +11,9 @@ public class Control {
 	private int banderas, celdasTapadas;
 	private static final int BOARD = 16;
 	private Random aleatorio;
-	private FileManager files;
 	
 	public Control() {
 		celdas = new Celda[BOARD][BOARD];
-		files = new FileManager();
 		ganador=false;
 		gameOver=false;
 		celdasTapadas=BOARD*BOARD;
