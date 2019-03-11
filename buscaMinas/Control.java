@@ -6,7 +6,7 @@ public class Control {
 	private Celda[][] celdas;
 	private boolean ganador, gameOver;
 	private static final int MINAS = 40;
-	private int banderas;
+	private int banderas, celdasTapadas;
 	private static final int BOARD = 16;
 	private Random aleatorio;
 	
@@ -14,6 +14,7 @@ public class Control {
 		celdas = new Celda[BOARD][BOARD];
 		ganador=false;
 		gameOver=false;
+		celdasTapadas=BOARD*BOARD;
 		banderas=MINAS;
 		aleatorio = new Random();
 		instanciarCeldas();
@@ -88,6 +89,7 @@ public class Control {
 		if(celdas[fila][col].isMina()) {
 			celdas[fila][col].revelar();
 			gameOver=true;
+			celdasTapadas--;
 		}
 		else {
 			continuar(fila, col);
@@ -103,6 +105,7 @@ public class Control {
 		if(fila>=0 && fila<=BOARD-1 && col>=0 && col<=BOARD-1
 				&& !celdas[fila][col].isMina() && celdas[fila][col].getEstado()==0) {
 				celdas[fila][col].revelar();
+				celdasTapadas--;
 				if(celdas[fila][col].getMinasCercanas()==0) {
 					checkVecinos(fila,col);
 				}
@@ -149,6 +152,8 @@ public class Control {
 	 */
 	public void reset() {
 		gameOver=false;
+		celdasTapadas=BOARD*BOARD;
+		banderas=MINAS;
 		for(int fila=0; fila<BOARD; fila++) {
 			for(int col=0; col<BOARD; col++) {
 				celdas[fila][col].reset();
@@ -156,12 +161,18 @@ public class Control {
 		}
 		setMinas();
 	}
-	
+		
 	public Celda[][] getCeldas() {
 		return celdas;
 	}
 
 	public boolean isGanador() {
+		if(celdasTapadas==MINAS) {
+			ganador=true;
+		}
+		else {
+			ganador=false;
+		}
 		return ganador;
 	}
 

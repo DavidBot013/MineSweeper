@@ -142,6 +142,12 @@ public class GUI extends JFrame{
 						revelarMinas();
 						endMessage(fuente);
 					}
+					else {
+						if(control.isGanador()) {
+							timer.stop();
+							JOptionPane.showMessageDialog(mainContenedor, "¡Felicidades, has ganado!");
+						}
+					}
 				}
 			}
 		}
@@ -149,6 +155,7 @@ public class GUI extends JFrame{
 			timer.setTime(0);
 			taparCeldas();
 			control.reset();
+			numFlags.setText(Integer.toString(control.getFlags()));
 		}
 	}
 	
@@ -171,6 +178,7 @@ public class GUI extends JFrame{
 		if(option==0) {
 			taparCeldas();
 			control.reset();
+			numFlags.setText(Integer.toString(control.getFlags()));
 			timer.setTime(0);
 			timer.start();
 		}
@@ -182,7 +190,7 @@ public class GUI extends JFrame{
 	private void taparCeldas() {
 		for(int fila=0; fila < Control.getBoard(); fila++) {
 			for(int col=0; col < Control.getBoard(); col++) {
-				control.getCeldas()[fila][col].setIcon(new ImageIcon("/resources/10.png"));
+				control.getCeldas()[fila][col].setIcon(new ImageIcon("src/resources/10.png"));
 			}
 		}
 	}
