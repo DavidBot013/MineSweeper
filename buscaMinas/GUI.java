@@ -3,14 +3,14 @@ package buscaMinas;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-//import javax.sound.sampled.DataLine;
+import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
-//import java.io.File;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,6 +31,9 @@ public class GUI extends JFrame implements ActionListener{
 	private Timer timer;
 	private FileManager files;
 	
+	/**
+	 * Constructor de la clase GUI
+	 */
 	public GUI() {
 		control = new Control();
 		timer = new Timer();
@@ -166,15 +169,16 @@ public class GUI extends JFrame implements ActionListener{
 						//guardarPuntaje();
 						revelarMinas();
 						try {
-							//DataLine.Info daInfo = new DataLine.Info(Clip.class, null);
+							DataLine.Info daInfo = new DataLine.Info(Clip.class, null);
 							
 							URL url = getClass().getResource("/resources/boom.wav");
-							AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+							AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/resources/boom.wav"));
 							//DataLine.Info info = new DataLine.Info(Clip.class, audioInputStream.getFormat());
 							//Clip clip = (Clip) AudioSystem.getLine(info);
 							Clip clip = AudioSystem.getClip();
 							clip.open(audioInputStream);
 							clip.start();
+							clip.drain();
 						} catch (IOException e1) {
 							System.out.println("Caught IO Exception: " + e1.getMessage());
 						} catch (UnsupportedAudioFileException e1) {

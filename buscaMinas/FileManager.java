@@ -1,10 +1,6 @@
 package buscaMinas;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,73 +8,30 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La clase FileManager se encargará de manejar los archivos de texto,
+ * leer y escribir sobre ellos. La mayoría de sus metodos son públicos ya que
+ * es una clase que es utilizada por GUI.
+ *
+ */
 public class FileManager {
-	private FileReader fileRead, fileTiempos;
-	private BufferedReader input, inputTiempos;
-	private FileWriter fileWrite, fileWriteTiempos;
-	private BufferedWriter output, outputTiempos;
 	private List<String> listaTiempos, listaJugadores;
 	
-	
-	public FileManager() {
-		try {
-			fileRead = new FileReader("src/resources/top5.txt");
-			input = new BufferedReader(fileRead);
-			fileWrite = new FileWriter("src/resources/top5.txt",true);
-			output = new BufferedWriter(fileWrite);
-			
-			fileTiempos = new FileReader("src/resources/tiempos.txt");
-			inputTiempos = new BufferedReader(fileTiempos);
-			fileWriteTiempos = new FileWriter("src/resources/tiempos.txt",true);
-			outputTiempos = new BufferedWriter(fileWriteTiempos);
-			
-			listaTiempos = new ArrayList<String>();
-			listaJugadores = new ArrayList<String>();
-		}catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
 	/**
-	 * Escribe al archivo tiempos.txt el recurso timer.getTime(), sin formato 
-	 * para poder comparar más facilmente en el caso que un jugador haga un tiempo
-	 * que merezca estar en el top 5.
-	 * @param time
+	 * Instancia dos Listas de tipo String y las pasa como ArrayLists.
+	 * ListaTiempos almacena los 5 mejores tiempos (solo el tiempo).
+	 * ListaJugadores almacena los records como tal (nombre, tiempo logrado y fecha).
 	 */
-	public void onlyTime(String time) {
-		try {			
-			String linea = inputTiempos.readLine();
-			String texto = time;
-			
-			while(linea!=null){
-				outputTiempos.write(texto);
-			    outputTiempos.newLine();
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		finally{
-			   try {
-				inputTiempos.close();
-				outputTiempos.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		   }
+	public FileManager() {
+		listaTiempos = new ArrayList<String>();
+		listaJugadores = new ArrayList<String>();
 	}
 	
 	/**
-	 * Guarda en el archivo top5.txt el nombre, tiempo logrado y fecha de cada jugador.
-	 * @param s
+	 * Modifica listaJugadores y luego reescribe todo el contenido
+	 * de top5.txt con el contenido de listaJugadores.
+	 * @param posicion, posicón donde añadir s dentro de listaJugadores.
+	 * @param s, String nuevo que se le añade a listaJugadores.
 	 */
 	public void gestionarTextFile(int posicion, String s) {		
 		try {
@@ -97,15 +50,7 @@ public class FileManager {
 			}
 			
 			Files.write(path, listaJugadores);
-			//String texto = s;
-			//String linea = input.readLine();
-			
-			
-			
-//			while(linea!=null){
-//			     output.write(texto);
-//			     output.newLine();
-//			}
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -113,19 +58,11 @@ public class FileManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	   finally{
-		   try {
-			input.close();
-			output.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	   }
 	}
+	
 	/**
-	 * 
+	 * Llena listaTiempos con el contenido que se encuentre en ese momento dentro
+	 * de tiempos.txt.
 	 */
 	private void setTiempos() {
 		
@@ -138,10 +75,11 @@ public class FileManager {
 		}
 	}
 	/**
-	 * Reescribe el archivo tiempos.txt, convel cambio en la linea especificada
+	 * Reescribe el archivo tiempos.txt, con el cambio en la linea especificada
 	 * Esta función se llama cada que haya un tiempo merecedor de estar en el top 5.
-	 * @param linea
-	 * @param newTime
+	 * @param linea, número de linea a ser modificada (se entiende como un indice dentro
+	 * de listaTiempos.
+	 * @param newTime, tiempo nuevo que hizo el jugador.
 	 */
 	public void modTiempos(int linea, long newTime) {
 		Path path = Paths.get("src/resources/tiempos.txt");
@@ -165,6 +103,10 @@ public class FileManager {
 		}
 	}
 	
+	/**
+	 * Devuelve listaTiempos
+	 * @return
+	 */
 	public List<String> getTiempos() {
 		setTiempos();
 		return listaTiempos;
