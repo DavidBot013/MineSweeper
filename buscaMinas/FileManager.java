@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,7 +92,8 @@ public class FileManager {
 				listaJugadores.add(posicion, s);
 			}
 			else {
-				listaJugadores.set(posicion, s);
+				listaJugadores.add(posicion, s);
+				listaJugadores.remove(5);
 			}
 			
 			Files.write(path, listaJugadores);
@@ -153,7 +153,8 @@ public class FileManager {
 			listaTiempos.add(linea, String.valueOf(newTime));
 		}
 		else {
-			listaTiempos.set(linea, String.valueOf(newTime));
+			listaTiempos.add(linea, String.valueOf(newTime));
+			listaTiempos.remove(5);
 		}
 		
 		try {

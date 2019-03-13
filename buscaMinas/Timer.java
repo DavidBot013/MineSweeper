@@ -5,13 +5,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import javax.swing.JPanel;
-import javax.swing.text.DateFormatter;
 
 public class Timer extends JPanel implements Runnable {
 	

@@ -1,24 +1,29 @@
 package buscaMinas;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.GridLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+//import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.BufferedReader;
+//import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-public class GUI extends JFrame{
+public class GUI extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	private Container mainContenedor;
-	private JPanel mainPanel, panelCuadricula, bottomPanel;
+	private JMenuBar BarraMenu;
+	private JMenu menu;
+	private JMenuItem Newgame, Score;
+	private JPanel mainPanel, panelCuadricula, bottomPanel, MenuInf;
 	private JLabel flagLabel, numFlags;
 	private JButton resetButton;
 	private EscuchaMouse escuchaM = new EscuchaMouse();
@@ -30,6 +35,16 @@ public class GUI extends JFrame{
 		control = new Control();
 		timer = new Timer();
 		files = new FileManager();
+		BarraMenu = new JMenuBar();
+		setJMenuBar(BarraMenu);
+		menu = new JMenu("Opciones");
+		BarraMenu.add(menu);
+		Newgame = new JMenuItem("Nuevo Juego");
+		Newgame.addActionListener(this);
+		menu.add(Newgame);
+		Score = new JMenuItem("Puntajes");
+		Score.addActionListener(this);
+		menu.add(Score);
 		this.setTitle("MineSweeper");
 		this.setResizable(false);
 		initGUI();
@@ -38,16 +53,16 @@ public class GUI extends JFrame{
 	private void initGUI() {
 		mainContenedor=this.getContentPane();
 		mainContenedor.setLayout(new BorderLayout());
-		
+
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 		
 		crearCuadricula();
 		bottomMenu();
 		
-		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+		mainPanel.add(MenuInf, BorderLayout.SOUTH);
 		mainPanel.add(panelCuadricula, BorderLayout.CENTER);
-		mainPanel.add(timer, BorderLayout.NORTH);
+		
 		mainContenedor.add(mainPanel);
 		this.pack();
 		this.setLocationRelativeTo(null);
@@ -73,6 +88,10 @@ public class GUI extends JFrame{
 	}
 	
 	private void bottomMenu() {
+		MenuInf = new JPanel();
+		MenuInf.setLayout(new BorderLayout());
+		
+		
 		bottomPanel = new JPanel();
 		
 		resetButton = new JButton();
@@ -86,6 +105,9 @@ public class GUI extends JFrame{
 		bottomPanel.add(resetButton);
 		bottomPanel.add(flagLabel);
 		bottomPanel.add(numFlags);
+		
+		MenuInf.add(bottomPanel, BorderLayout.WEST);
+		MenuInf.add(timer, BorderLayout.EAST);
 	}
 	private class EscuchaMouse implements MouseListener {
 
@@ -141,10 +163,26 @@ public class GUI extends JFrame{
 					control.checkCelda(celdaSeleccionada.getFila(), celdaSeleccionada.getCol());
 					if(control.isGameOver()) {
 						timer.stop();
-						JOptionPane.showMessageDialog(mainContenedor, "Has perdido.");
 						//guardarPuntaje();
 						revelarMinas();
-						endMessage();
+						try {
+							//DataLine.Info daInfo = new DataLine.Info(Clip.class, null);
+							
+							URL url = getClass().getResource("/resources/boom.wav");
+							AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+							//DataLine.Info info = new DataLine.Info(Clip.class, audioInputStream.getFormat());
+							//Clip clip = (Clip) AudioSystem.getLine(info);
+							Clip clip = AudioSystem.getClip();
+							clip.open(audioInputStream);
+							clip.start();
+						} catch (IOException e1) {
+							System.out.println("Caught IO Exception: " + e1.getMessage());
+						} catch (UnsupportedAudioFileException e1) {
+							System.out.println("Caught Unsupported Audio File Exception: " + e1.getMessage()); 
+					    } catch (LineUnavailableException e1) {
+							System.out.println("Caught Line Unavailable Exception: " + e1.getMessage());
+						}
+						 endMessage();
 					}
 					else {
 						if(control.isGanador()) {
@@ -195,15 +233,14 @@ public class GUI extends JFrame{
 		else {
 			//No hizo un tiempo lo suficientemente bueno, debe preguntarsele 
 			//si quiere volver a jugar.
-			JOptionPane.showMessageDialog(mainContenedor, "¡Has ganado!. Pero no entras al top 5 :(");
-			endMessage();
+			System.out.println("wat");
 		}
 	}
 	
 	
 	private void endMessage() {
 		int option = JOptionPane.showConfirmDialog(mainContenedor, 
-				"¿Deseas jugar otra vez?", "GameOver", JOptionPane.YES_NO_OPTION);
+				"Has perdido. ¿Deseas jugar otra vez?", "GameOver", JOptionPane.YES_NO_OPTION);
 	
 		
 		if(option==0) {
@@ -225,5 +262,56 @@ public class GUI extends JFrame{
 			}
 		}
 	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource()==Newgame) {
+			timer.setTime(0);
+			taparCeldas();
+			control.reset();
+			numFlags.setText(Integer.toString(control.getFlags()));
+        }
+		
+		//Lee el .txt y muestra los puntajes del top 5 en una nueva ventana
+        if (e.getSource()==Score) {
+        	String input = "";
+        	//Lector
+        	BufferedReader reader = null;
+			try {
+				reader = new BufferedReader(new FileReader("src/resources/top5.txt"));
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        	String line = null;
+        	//Un bucle que recorre cada linea del .txt
+        	try {
+				while ((line = reader.readLine()) != null) {
+				    //A\F1ade la linea y  "\n" que indica una nueva linea
+				    input += line + "\n";
+				}
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        	try {
+				reader.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        	//Imprime la variable input del lector la cual contiene todas las lineas del .txt en un JTextArea
+        	JTextArea textArea = new JTextArea(input);
+        	JScrollPane scrollPane = new JScrollPane(textArea);  // El JScrollPane solo agrega un marco, asi se ve mejor.
+        	textArea.setLineWrap(true);  
+        	textArea.setWrapStyleWord(true); 
+        	scrollPane.setPreferredSize( new Dimension( 200, 100 ) ); //A E S T H E T I C  S I Z E
+        	JOptionPane.showMessageDialog(null, 
+        	    scrollPane, 
+        	    "Lista de Puntajes:", 
+        	    JOptionPane.PLAIN_MESSAGE);
+     
+        }
+    }
 }
-
