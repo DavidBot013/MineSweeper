@@ -4,6 +4,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Maneja toda la lógica del buscaminas.
+ *
+ */
 public class Control {
 	private Celda[][] celdas;
 	private boolean ganador, gameOver;
@@ -152,15 +156,6 @@ public class Control {
 		banderas++;
 	}
 	
-	//public boolean goodEnough(long newTime) {
-		//long oldTime = 
-//		if(newTime>oldTime) {
-//			return true;
-//		}
-//		else {
-//			return false;
-//		}
-//	}
 	/**
 	 * Reinicia la partida.
 	 */
@@ -176,10 +171,23 @@ public class Control {
 		setMinas();
 	}
 	
+	/**
+	 * Determina si se ha logrado un buen tiempo. Se utiliza un objeto Iterator<E>
+	 * para hacer más comodo el recorrer la lista tiempos.
+	 * 
+	 * Si en efecto se logró un buen tiempo la función retornará a que posicion pertenece
+	 * en caso contrario retorna -1.
+	 * @param newTime
+	 * @param tiempos
+	 * @return
+	 */
 	public int compararTiempos(long newTime, List<String> tiempos) {
 		int contador=0;
 		Iterator<String> it = tiempos.iterator();
 		
+		/** Si tiempos está vacía, quiere decir que aún no hay ningún record
+		 * por lo tanto simplemente se añade el tiempo logrado.
+		 */
 		if(!tiempos.isEmpty()) {
 			while(it.hasNext()) {
 				long oldTime = Long.parseLong(it.next());
@@ -187,12 +195,10 @@ public class Control {
 				if(newTime<oldTime) {
 					return contador;
 				}
-				else if (newTime==oldTime) {
-					return -1;
-				}
 				contador++;
-			}
+			}// fin ciclo while
 			
+			/** Si la lista aún no está llena...**/
 			if(tiempos.size()<5) {
 				return tiempos.size();
 			}
@@ -209,6 +215,16 @@ public class Control {
 		return celdas;
 	}
 
+	/**
+	 * Determina si se ha ganado el juego. Esto sucede cuando el número de
+	 * celdas tapadas es igual al número de minas.
+	 * 
+	 * Por la mera naturaleza del juego es imposible que se haya llegado a 40 celdas
+	 * tapadas y que alguna de ellas no sea una mina. 
+	 * 
+	 * (Celdas tapadas incluye las celdas marcadas con bandera).
+	 * @return
+	 */
 	public boolean isGanador() {
 		if(celdasTapadas==MINAS) {
 			ganador=true;
