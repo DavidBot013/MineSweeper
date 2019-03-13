@@ -11,6 +11,12 @@ import java.util.Locale;
 
 import javax.swing.JPanel;
 
+/**
+ * Clase Timer implementa el cronometro que se usa para calcular el tiempo de un
+ * jugador. Hereda de JPanel e implementa la interfaz Runnable.
+ * 
+ *
+ */
 public class Timer extends JPanel implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
@@ -20,10 +26,18 @@ public class Timer extends JPanel implements Runnable {
 	private long time;
 	private Thread hilo1;
 	
+	/**
+	 * El tiempo inicia en cero.
+	 */
 	public Timer() {
 		time=0;
 	}
 	
+	/**
+	 * Hilo que se encarga de ir aumentando el atributo time de uno en uno
+	 * cada segundo y decirle a setTime() que lo organice en un formato más fácil
+	 * de leer (hh:mm:ss).
+	 */
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -40,16 +54,27 @@ public class Timer extends JPanel implements Runnable {
 		}
 	}
 	
+	/**
+	 * Determina el tamaño del panel.
+	 */
 	public Dimension getPreferredSize() {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
 		return size;
 	}
+	/**
+	 * Función que se encarga de pintar el cronometro.
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.BLACK);
 		g.drawString(timeString, 0, HEIGHT);
 	}
 	
+	/**
+	 * Convierte el parametro time en un formato más entendible y fuente agradable.
+	 * Luego llama al metodo repaint() para que lo pinte.
+	 * @param time
+	 */
 	public void setTime(long time) {
 		this.time = time;
 		long h = time/3600;
@@ -66,6 +91,12 @@ public class Timer extends JPanel implements Runnable {
 		repaint();
 	}
 	
+	/**
+	 * Devuelve el tiempo en formato más entendible. Hace lo mismo que la primera parte
+	 * de setTime().
+	 * @param time
+	 * @return
+	 */
 	public String timeFormat(long time) {
 		long h = time/3600;
 		long m = (time-h*3600)/60;
@@ -75,12 +106,18 @@ public class Timer extends JPanel implements Runnable {
 		return timeString;
 	}
 	
+	/**
+	 * Inicia el hilo 
+	 */
 	public void start() {
 		stop();
 		hilo1 = new Thread(this);
 		hilo1.start();
 	}
 	
+	/**
+	 * Detiene el hilo luego de cerciorarse de que exista.
+	 */
 	public void stop() {
 		if(hilo1!=null) {
 			hilo1.interrupt();
@@ -88,10 +125,18 @@ public class Timer extends JPanel implements Runnable {
 		}
 	}
 	
+	/**
+	 * Retorna el tiempo en segundos.
+	 * @return time
+	 */
 	public long getTime() {
 		return time;
 	}
 	
+	/**
+	 * Retorna la fecha actual del sistema en formato yyyy-MM-dd.
+	 * @return
+	 */
 	public String getDate() {
 		LocalDateTime ldt = LocalDateTime.now().plusDays(1);
 		DateTimeFormatter formato1 = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
