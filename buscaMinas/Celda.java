@@ -56,10 +56,17 @@ public class Celda extends JButton{
 		this.estado=estado;
 	}
 	
+	/**
+	 * Transforma la celda en una mina.
+	 */
 	public void beMine() {
 		esMina=true;
 	}
 	
+	/**
+	 * Bloque o desbloquea una celda, dependiendo del argumento option.
+	 * @param option
+	 */
 	public void flagCell(boolean option) {
 		if(option) {
 			flagged=true;
@@ -81,6 +88,10 @@ public class Celda extends JButton{
 		this.setIcon(new ImageIcon("src/resources/10.png"));
 	}
 	
+	/**
+	 * Incrementa el número de minas cercanas en uno. Función de gran ayuda para
+	 * calcula las minas cercanas de una celda.
+	 */
 	public void increaseMineCount() {
 		minasCercanas++;
 	}
