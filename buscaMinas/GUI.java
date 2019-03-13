@@ -211,7 +211,6 @@ public class GUI extends JFrame implements ActionListener{
 						if(control.isGanador()) {
 							timer.stop();
 							guardarPuntaje();
-						
 						}
 					}
 				}
@@ -261,13 +260,14 @@ public class GUI extends JFrame implements ActionListener{
 			files.gestionarTextFile(posicion, name+" "+time+" "+date);
 		}
 		else {
-			
-			
+			endMessage();
 		}
 	}
 	
 	/**
 	 * Mensaje final una vez acaba el juego, ya sea que pierda o que gane.
+	 * Si ganó pero cae en esta función quiere decir que no hizo un tiempo
+	 * suficientemente bueno.
 	 */
 	private void endMessage() {
 		int option;
