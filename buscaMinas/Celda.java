@@ -93,6 +93,9 @@ public class Celda extends JButton{
 			if(esMina==false) {
 				this.setIcon(new ImageIcon("src/resources/"+minasCercanas+".png"));
 			}
+			else if (esMina && flagged){
+				this.setIcon(new ImageIcon("src/resources/12.png"));
+			}
 			else {
 				this.setIcon(new ImageIcon("src/resources/9.png"));
 			}

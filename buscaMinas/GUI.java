@@ -3,7 +3,7 @@ package buscaMinas;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
+//import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
@@ -14,8 +14,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
+//import java.net.URL;
 
+/**
+ * Maneja todos los elementos gráficos de buscaminas.
+ *
+ */
 public class GUI extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
@@ -53,6 +57,9 @@ public class GUI extends JFrame implements ActionListener{
 		initGUI();
 	}
 	
+	/**
+	 * Inicializa la ventana construyendo los elementos básicos (paneles, bottones, etc).
+	 */
 	private void initGUI() {
 		mainContenedor=this.getContentPane();
 		mainContenedor.setLayout(new BorderLayout());
@@ -73,6 +80,9 @@ public class GUI extends JFrame implements ActionListener{
 		timer.start();
 	}
 	
+	/**
+	 * Visualmente crea la cuadricula de celdas dentro del JPanel panelCuadricula.
+	 */
 	private void crearCuadricula() {
 		panelCuadricula = new JPanel();
 		int rows = Control.getBoard();
@@ -90,6 +100,10 @@ public class GUI extends JFrame implements ActionListener{
 		}
 	}
 	
+	/**
+	 * Crea el menú inferior que contiene el botón de reset, el número de banderas
+	 * restantes y el tiempo que lleva jugando.
+	 */
 	private void bottomMenu() {
 		MenuInf = new JPanel();
 		MenuInf.setLayout(new BorderLayout());
@@ -112,6 +126,7 @@ public class GUI extends JFrame implements ActionListener{
 		MenuInf.add(bottomPanel, BorderLayout.WEST);
 		MenuInf.add(timer, BorderLayout.EAST);
 	}
+	
 	private class EscuchaMouse implements MouseListener {
 
 		@Override
@@ -146,6 +161,10 @@ public class GUI extends JFrame implements ActionListener{
 		
 	}
 	
+	/**
+	 * Clase que maneja los eventos provenientes el mouse.
+	 * @param MouseEvent e
+	 */
 	private void manejaEvento(MouseEvent e) {
 		String fuente = e.getSource().getClass().getName();
 		
@@ -169,9 +188,9 @@ public class GUI extends JFrame implements ActionListener{
 						//guardarPuntaje();
 						revelarMinas();
 						try {
-							DataLine.Info daInfo = new DataLine.Info(Clip.class, null);
+							//DataLine.Info daInfo = new DataLine.Info(Clip.class, null);
 							
-							URL url = getClass().getResource("/resources/boom.wav");
+							//URL url = getClass().getResource("/resources/boom.wav");
 							AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/resources/boom.wav"));
 							//DataLine.Info info = new DataLine.Info(Clip.class, audioInputStream.getFormat());
 							//Clip clip = (Clip) AudioSystem.getLine(info);
@@ -205,7 +224,10 @@ public class GUI extends JFrame implements ActionListener{
 			numFlags.setText(Integer.toString(control.getFlags()));
 		}
 	}
-	
+	/**
+	 * Cuando se pierde la partida se le revelan al jugador las minas que estaban tapadas
+	 * y cuales banderas eran minas.
+	 */
 	private void revelarMinas() {
 		for(int fila=0; fila < Control.getBoard(); fila++) {
 			for(int col=0; col < Control.getBoard(); col++) {
@@ -215,6 +237,10 @@ public class GUI extends JFrame implements ActionListener{
 			}
 		}
 	}
+	
+	/**
+	 * Guarda el tiempo logrado por el jugador, junto con su nombre y fecha.
+	 */
 	private void guardarPuntaje() {
 		int posicion = control.compararTiempos(timer.getTime(), files.getTiempos());
 		/**
@@ -235,18 +261,25 @@ public class GUI extends JFrame implements ActionListener{
 			files.gestionarTextFile(posicion, name+" "+time+" "+date);
 		}
 		else {
-			//No hizo un tiempo lo suficientemente bueno, debe preguntarsele 
-			//si quiere volver a jugar.
-			System.out.println("wat");
+			
+			
 		}
 	}
 	
-	
+	/**
+	 * Mensaje final una vez acaba el juego, ya sea que pierda o que gane.
+	 */
 	private void endMessage() {
-		int option = JOptionPane.showConfirmDialog(mainContenedor, 
-				"Has perdido. ¿Deseas jugar otra vez?", "GameOver", JOptionPane.YES_NO_OPTION);
-	
-		
+		int option;
+		if(control.isGanador()) {
+			option = JOptionPane.showConfirmDialog(mainContenedor, 
+					"¡Has Ganado! ¿Deseas jugar otra vez?", "GameOver", JOptionPane.YES_NO_OPTION);
+		}
+		else {
+			option = JOptionPane.showConfirmDialog(mainContenedor, 
+					"Perdiste. ¿Deseas jugar otra vez?", "GameOver", JOptionPane.YES_NO_OPTION);
+		}
+			
 		if(option==0) {
 			taparCeldas();
 			control.reset();
@@ -259,6 +292,10 @@ public class GUI extends JFrame implements ActionListener{
 		}
 	}
 	
+	/**
+	 * Tapa todas las celdas. Esta función se llama cuando el jugador quiera volver a jugar otra partida
+	 * o reiniciar su partida actual.
+	 */
 	private void taparCeldas() {
 		for(int fila=0; fila < Control.getBoard(); fila++) {
 			for(int col=0; col < Control.getBoard(); col++) {
